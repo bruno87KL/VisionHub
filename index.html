@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Streamix</title>
+  <title>Streamix + GitHub Liso</title>
   <style>
     /* ================== ESTILOS GERAIS ================== */
     body {
@@ -101,6 +101,15 @@
       border-radius: 5px;
       border: none;
     }
+
+    /* ======== ESTILO DO BLOCO GITHUB LISO ======== */
+    .bookmarklet {
+      display: inline-block; padding: 12px 16px; border-radius: 10px; text-decoration: none;
+      border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-top: 30px;
+    }
+    .bookmarklet code {
+      background: #f6f8fa; padding: 2px 6px; border-radius: 6px;
+    }
   </style>
 </head>
 <body>
@@ -179,6 +188,13 @@
     </div>
   </div>
 
+  <!-- BLOCO GITHUB LISO -->
+  <h1>GitHub Liso</h1>
+  <p>Arraste o botão abaixo para a sua barra de favoritos. Depois, clique nele quando estiver no <code>github.com</code>.</p>
+  <p>
+    <a class="bookmarklet" href="javascript:(()=>{alert('Aqui entra o código do GitHub Liso');})();">GitHub Liso</a>
+  </p>
+
 <script>
 /* Troca de tema */
 function toggleTheme() {
@@ -210,6 +226,19 @@ up.addEventListener("click", () => window.scrollBy({ top: -scrollAmount, behavio
 down.addEventListener("click", () => window.scrollBy({ top: scrollAmount, behavior: "smooth" }));
 window.addEventListener("scroll", updateVisibility);
 window.addEventListener("load", updateVisibility);
+
+/* Filtro de vídeos */
+function filterVideos(category) {
+  const videos = document.querySelectorAll('.video-item');
+  videos.forEach(v => {
+    if (category === 'all') {
+      v.style.display = 'block';
+    } else {
+      v.style.display = v.classList.contains(category) ? 'block' : 'none';
+    }
+  });
+}
 </script>
 </body>
 </html>
+
