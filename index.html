@@ -200,48 +200,75 @@
   </p>
 
 <script>
+/* ========== FUNÇÃO SEGURA (EVITA CRASH) ========== */
+function safeRun(callback) {
+  try {
+    callback();
+  } catch (error) {
+    console.error("⚠️ Erro detectado:", error);
+    alert("Ocorreu um erro, mas o site continua funcionando 👍");
+  }
+}
+
 /* Troca de tema */
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
 }
 
-/* Pesquisa */
-const searchInput = document.getElementById('searchInput');
-const items = document.querySelectorAll('.item');
-searchInput.addEventListener('input', function() {
-  const query = this.value.toLowerCase();
-  items.forEach(item => {
-    const text = item.textContent.toLowerCase();
-    item.classList.toggle('hidden-item', !text.includes(query));
-  });
+/* Pesquisa segura */
+safeRun(() => {
+  const searchInput = document.getElementById('searchInput');
+  const items = document.querySelectorAll('.item');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('hidden-item', !text.includes(query));
+      });
+    });
+  }
 });
 
 /* Botões de rolagem */
-const up = document.getElementById("upBtn");
-const down = document.getElementById("downBtn");
-const scrollAmount = 250;
-function updateVisibility() {
-  const scrollY = window.scrollY;
-  const maxY = document.documentElement.scrollHeight - window.innerHeight;
-  up.classList.toggle("hidden", scrollY <= 5);
-  down.classList.toggle("hidden", scrollY >= maxY - 5);
-}
-up.addEventListener("click", () => window.scrollBy({ top: -scrollAmount, behavior: "smooth" }));
-down.addEventListener("click", () => window.scrollBy({ top: scrollAmount, behavior: "smooth" }));
-window.addEventListener("scroll", updateVisibility);
-window.addEventListener("load", updateVisibility);
+safeRun(() => {
+  const up = document.getElementById("upBtn");
+  const down = document.getElementById("downBtn");
+  const scrollAmount = 250;
+  function updateVisibility() {
+    const scrollY = window.scrollY;
+    const maxY = document.documentElement.scrollHeight - window.innerHeight;
+    if (up && down) {
+      up.classList.toggle("hidden", scrollY <= 5);
+      down.classList.toggle("hidden", scrollY >= maxY - 5);
+    }
+  }
+  if (up && down) {
+    up.addEventListener("click", () => window.scrollBy({ top: -scrollAmount, behavior: "smooth" }));
+    down.addEventListener("click", () => window.scrollBy({ top: scrollAmount, behavior: "smooth" }));
+  }
+  window.addEventListener("scroll", updateVisibility);
+  window.addEventListener("load", updateVisibility);
+});
 
 /* Filtro de vídeos */
-function filterVideos(category) {
-  const videos = document.querySelectorAll('.video-item');
-  videos.forEach(v => {
-    if (category === 'all') {
-      v.style.display = 'block';
-    } else {
-      v.style.display = v.classList.contains(category) ? 'block' : 'none';
-    }
-  });
-}
+safeRun(() => {
+  window.filterVideos = function(category) {
+    const videos = document.querySelectorAll('.video-item');
+    videos.forEach(v => {
+      if (category === 'all') {
+        v.style.display = 'block';
+      } else {
+        v.style.display = v.classList.contains(category) ? 'block' : 'none';
+      }
+    });
+  };
+});
+
+/* Log de carregamento seguro */
+safeRun(() => {
+  console.log("✅ Streamix carregado com segurança!");
+});
 </script>
 </body>
 </html>
