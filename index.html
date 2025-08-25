@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Streamix + GitHub Liso</title>
   <style>
-    /* ================== ESTILOS GERAIS ================== */
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
@@ -15,10 +14,8 @@
     }
     .dark-mode { background-color: black; color: white; }
 
-    /* LOGO */
     .logo-xl { width: 320px; max-width: 100%; margin: 20px auto; display:block; }
 
-    /* Botões de rolagem */
     .scroll-btn {
       position: fixed;
       right: 16px;
@@ -43,7 +40,6 @@
     #downBtn { bottom: 20px; }
     .hidden { opacity: 0; pointer-events: none; }
 
-    /* Pesquisa */
     .search-container {
       position: relative;
       max-width: 400px;
@@ -68,7 +64,6 @@
     }
     .hidden-item { display: none; }
 
-    /* Filtro de vídeos */
     .filter-btns { margin: 20px 0; }
     .filter-btns button {
       padding: 10px 15px;
@@ -102,7 +97,6 @@
       border: none;
     }
 
-    /* ======== ESTILO DO BLOCO GITHUB LISO ======== */
     .bookmarklet {
       display: inline-block; padding: 12px 16px; border-radius: 10px; text-decoration: none;
       border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-top: 30px;
@@ -110,6 +104,22 @@
     .bookmarklet code {
       background: #f6f8fa; padding: 2px 6px; border-radius: 6px;
     }
+
+    /* Blocos de categorias extras */
+    .categoria {
+      background: #fff;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      text-align: left;
+    }
+    .categoria h2 { margin-bottom: 10px; }
+    .categoria ul { list-style: none; padding: 0; }
+    .categoria li { margin: 6px 0; }
+    .categoria a { color: #0066cc; font-weight: bold; text-decoration: none; }
+    .categoria a:hover { color: #ff6600; }
   </style>
 </head>
 <body>
@@ -199,23 +209,47 @@
     <a class="bookmarklet" href="javascript:(()=>{alert('Aqui entra o código do GitHub Liso');})();">GitHub Liso</a>
   </p>
 
+  <!-- Categorias Extras -->
+  <h1>📂 Categorias de Vídeos YouTube</h1>
+  <div class="categoria">
+    <h2>🎵 Música</h2>
+    <ul>
+      <li><a href="https://youtu.be/bsyt56Mmt4U?si=7bZvsGgSc7thJhez" target="_blank">Mathover - Vingança (Uruma | Juujika no Rokunin)</a></li>
+      <li><a href="https://youtu.be/KKQNqLn-JvU?si=chZay5JvmA-Ik4Jh" target="_blank">bk - música de amor nunca mais (speed up)</a></li>
+      <li><a href="https://youtu.be/fFl8_UBxiwE?si=EaxAmM8vAuCehwLp" target="_blank">CALA BONITA - (Slowed + Reverb)</a></li>
+      <li><a href="https://youtu.be/Db8rOiV2-1g?si=YyC1rLtM2x1uNBka" target="_blank">MAIS UM CORPO, MAIS UM BECK - MCs</a></li>
+    </ul>
+  </div>
+
+  <div class="categoria">
+    <h2>📖 Manhwa / Anime</h2>
+    <ul>
+      <li><a href="https://youtu.be/dn1SS0dPlv4?si=MvD4sJyfyKjq7dsf" target="_blank">LIXO Desperta Um TALENTO SECRETO (Manhwa)</a></li>
+      <li><a href="https://youtu.be/CkAeamJkT3g?si=esNPHnQdKjWNikY4" target="_blank">O guerreiro soldado reencarna em outro mundo</a></li>
+    </ul>
+  </div>
+
+  <div class="categoria">
+    <h2>🎮 Games</h2>
+    <ul>
+      <li><a href="https://youtu.be/XsaXfkpKPNM?si=hJs9P7ruC59GyUrg" target="_blank">Gameplay de Red Dead Redemption 2</a></li>
+    </ul>
+  </div>
+
 <script>
-/* ========== FUNÇÃO SEGURA (EVITA CRASH) ========== */
 function safeRun(callback) {
-  try {
-    callback();
-  } catch (error) {
+  try { callback(); } 
+  catch (error) {
     console.error("⚠️ Erro detectado:", error);
     alert("Ocorreu um erro, mas o site continua funcionando 👍");
   }
 }
 
-/* Troca de tema */
 function toggleTheme() {
   document.body.classList.toggle("dark-mode");
 }
 
-/* Pesquisa segura */
+/* Pesquisa */
 safeRun(() => {
   const searchInput = document.getElementById('searchInput');
   const items = document.querySelectorAll('.item');
@@ -230,7 +264,7 @@ safeRun(() => {
   }
 });
 
-/* Botões de rolagem */
+/* Scroll */
 safeRun(() => {
   const up = document.getElementById("upBtn");
   const down = document.getElementById("downBtn");
@@ -251,7 +285,7 @@ safeRun(() => {
   window.addEventListener("load", updateVisibility);
 });
 
-/* Filtro de vídeos */
+/* Filtro vídeos */
 safeRun(() => {
   window.filterVideos = function(category) {
     const videos = document.querySelectorAll('.video-item');
@@ -265,10 +299,7 @@ safeRun(() => {
   };
 });
 
-/* Log de carregamento seguro */
-safeRun(() => {
-  console.log("✅ Streamix carregado com segurança!");
-});
+console.log("✅ Streamix carregado com segurança!");
 </script>
 </body>
 </html>
