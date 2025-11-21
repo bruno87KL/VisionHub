@@ -1,308 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Streamix + GitHub Liso</title>
-  <style>
-    /* ================== ESTILOS GERAIS ================== */
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    .dark-mode { background-color: black; color: white; }
-
-    /* LOGO */
-    .logo-xl { width: 320px; max-width: 100%; margin: 20px auto; display:block; }
-
-    /* Botões de rolagem */
-    .scroll-btn {
-      position: fixed;
-      right: 16px;
-      width: 42px;
-      height: 42px;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-      transition: background .2s, opacity .3s;
-      z-index: 999;
-      backdrop-filter: blur(4px);
-    }
-    .scroll-btn:hover { background: rgba(0,0,0,0.75); }
-    #upBtn { bottom: 80px; }
-    #downBtn { bottom: 20px; }
-    .hidden { opacity: 0; pointer-events: none; }
-
-    /* Pesquisa */
-    .search-container {
-      position: relative;
-      max-width: 400px;
-      margin: 20px auto;
-    }
-    .search-container input {
-      width: 100%;
-      padding: 10px 35px 10px 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .search-container .icon {
-      position: absolute;
-      right: 10px;
-      top: 9px;
-      font-size: 18px;
-      color: #555;
-    }
-    .item {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    .hidden-item { display: none; }
-
-    /* Filtro de vídeos */
-    .filter-btns { margin: 20px 0; }
-    .filter-btns button {
-      padding: 10px 15px;
-      margin: 5px;
-      border: none;
-      background: #3498db;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    .filter-btns button:hover { background: #217dbb; }
-
-    .video-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-    .video-item {
-      width: 300px;
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    iframe {
-      width: 100%;
-      height: 180px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    /* ======== ESTILO DO BLOCO GITHUB LISO ======== */
-    .bookmarklet {
-      display: inline-block; padding: 12px 16px; border-radius: 10px; text-decoration: none;
-      border: 1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-top: 30px;
-    }
-    .bookmarklet code {
-      background: #f6f8fa; padding: 2px 6px; border-radius: 6px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Streamix — Organização por Tópicos</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+body { margin: 0; background: #000; color: #fff; font-family: Arial; }
+header { background: #111; padding: 20px; }
+.logo { font-size: 32px; font-weight: bold; }
+.container { padding: 20px; }
+.grid { display: flex; flex-wrap: wrap; gap: 20px; }
+.card { background: #111; padding: 12px; width: 260px; border-radius: 6px; }
+.thumbnail { width: 100%; border-radius: 4px; }
+.topics-section { margin-top: 50px; }
+.topic-block { margin-bottom: 35px; }
+.video-item { margin: 6px 0; padding: 8px; background: #1a1a1a; border-radius: 4px; }
+</style>
 </head>
 <body>
-  <!-- LOGO SVG -->
-  <svg class="logo-xl" viewBox="0 0 1100 220" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="g-text" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#06b6d4"/>
-        <stop offset="50%" stop-color="#7c3aed"/>
-        <stop offset="100%" stop-color="#22c55e"/>
-      </linearGradient>
-    </defs>
-    <text x="200" y="130" font-size="88" font-weight="bold" fill="url(#g-text)">Streamix</text>
-    <circle cx="90" cy="110" r="70" fill="url(#g-text)" opacity="0.9"/>
-    <polygon points="70,80 130,110 70,140" fill="white"/>
-  </svg>
+<header>
+  <div class="logo">Streamix</div>
+</header>
 
-  <p>Clique no botão para trocar o fundo.</p>
-  <button onclick="toggleTheme()">🌙 Mudar Tema</button>
+<div class="container">
+  <h2>Filmes Recomendados</h2>
+  <div id="movieGrid" class="grid"></div>
 
-  <!-- Pesquisa -->
-  <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Pesquisar...">
-    <span class="icon">🔍</span>
-  </div>
+  <h2 class="topics-section">Organizador de Vídeos por Tópicos</h2>
 
-  <div id="list">
-    <div class="item">Filmes</div>
-    <div class="item">Games</div>
-    <div class="item">Jogos</div>
-    <div class="item">Unboxing</div>
-    <div class="item">Música</div>
-    <div class="item">Animes</div>
-    <div class="item">Funk</div>
-    <div class="item">Phonk</div>
-  </div>
+  <label>Filtrar por título:
+    <input type="text" id="searchInput" placeholder="Buscar vídeos...">
+  </label>
 
-  <!-- Botões de scroll -->
-  <button id="upBtn" class="scroll-btn">▲</button>
-  <button id="downBtn" class="scroll-btn">▼</button>
-
-  <!-- Botões de filtro -->
-  <div class="filter-btns">
-    <button onclick="filterVideos('all')">Todos</button>
-    <button onclick="filterVideos('filmes')">Filmes</button>
-    <button onclick="filterVideos('games')">Games</button>
-    <button onclick="filterVideos('jogos')">Jogos</button>
-    <button onclick="filterVideos('unboxing')">Unboxing</button>
-    <button onclick="filterVideos('musica')">Música</button>
-    <button onclick="filterVideos('animes')">Animes</button>
-    <button onclick="filterVideos('funk')">Funk</button>
-    <button onclick="filterVideos('phonk')">Phonk</button>
-  </div>
-
-  <!-- Lista de vídeos -->
-  <div class="video-container">
-    <div class="video-item filmes">
-      <iframe src="https://www.youtube.com/embed/4Ggu15Ff4uY" allowfullscreen></iframe>
-      <p>Filme 1</p>
-    </div>
-    <div class="video-item games">
-      <iframe src="https://www.youtube.com/embed/3C0plcVvTZ4" allowfullscreen></iframe>
-      <p>Game 1</p>
-    </div>
-    <div class="video-item jogos">
-      <iframe src="https://www.youtube.com/embed/pc9xSXuRKZg" allowfullscreen></iframe>
-      <p>Jogo 1</p>
-    </div>
-    <div class="video-item unboxing">
-      <iframe src="https://www.youtube.com/embed/xfrWgAnzEdE" allowfullscreen></iframe>
-      <p>Unboxing 1</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/lMTs0Yyerb4" allowfullscreen></iframe>
-      <p>Música 1</p>
-    </div>
-    <div class="video-item animes">
-      <iframe src="https://www.youtube.com/embed/ZAAjSk1Kj2o" allowfullscreen></iframe>
-      <p>Animes 1</p>
-    </div>
-
-    <!-- Vários vídeos de música -->
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/iuFRHc7BxXQ" allowfullscreen></iframe>
-      <p>Música 2</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/XsaXfkpKPNM" allowfullscreen></iframe>
-      <p>Música 3</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/CkAeamJkT3g" allowfullscreen></iframe>
-      <p>Música 4</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/Db8rOiV2-1g" allowfullscreen></iframe>
-      <p>Música 5</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/fFl8_UBxiwE" allowfullscreen></iframe>
-      <p>Música 6</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/KKQNqLn-JvU" allowfullscreen></iframe>
-      <p>Música 7</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/bsyt56Mmt4U" allowfullscreen></iframe>
-      <p>Música 8</p>
-    </div>
-    <div class="video-item musica">
-      <iframe src="https://www.youtube.com/embed/dn1SS0dPlv4" allowfullscreen></iframe>
-      <p>Música 9</p>
-    </div>
-  </div>
-
-  <!-- BLOCO GITHUB LISO -->
-  <h1>GitHub Liso</h1>
-  <p>Arraste o botão abaixo para a sua barra de favoritos. Depois, clique nele quando estiver no <code>github.com</code>.</p>
-  <p>
-    <a class="bookmarklet" href="javascript:(()=>{alert('Aqui entra o código do GitHub Liso');})();">GitHub Liso</a>
-  </p>
+  <div id="topicsContainer"></div>
+</div>
 
 <script>
-/* ========== FUNÇÃO SEGURA (EVITA CRASH) ========== */
-function safeRun(callback) {
-  try {
-    callback();
-  } catch (error) {
-    console.error("⚠️ Erro detectado:", error);
-    alert("Ocorreu um erro, mas o site continua funcionando 👍");
-  }
+/************** DADOS **************/
+const videos = [
+  { title: "Aula 1 — Matemática", url: "videos/aula1.mp4", topic: "Aulas", description: "Introdução à matemática" },
+  { title: "Aula 2 — Geometria", url: "videos/aula2.mp4", topic: "Aulas", description: "Formas e ângulos" },
+  { title: "Show Rock 2024", url: "videos/rock.mp4", topic: "Música", description: "Concerto ao vivo" }
+];
+
+const movies = [
+  { title: "Interestelar", year: "2014", img: "https://i.imgur.com/Eu7dc5D.jpg" },
+  { title: "Batman: O Cavaleiro das Trevas", year: "2008", img: "https://i.imgur.com/YIzq7v4.jpg" }
+];
+
+/************** STREAMIX **************/
+function renderMovies() {
+  const grid = document.getElementById("movieGrid");
+  grid.innerHTML = movies.map(m => `
+    <div class="card">
+      <img class="thumbnail" src="${m.img}" />
+      <h3>${m.title}</h3>
+      <p>${m.year}</p>
+    </div>
+  `).join("");
+}
+renderMovies();
+
+/************** ORGANIZADOR **************/
+function groupByTopic(list) {
+  const map = {};
+  list.forEach(v => {
+    if (!map[v.topic]) map[v.topic] = [];
+    map[v.topic].push(v);
+  });
+  return map;
 }
 
-/* Troca de tema */
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
+function renderTopics() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const filtered = videos.filter(v => v.title.toLowerCase().includes(search));
+  const topics = groupByTopic(filtered);
+  const container = document.getElementById("topicsContainer");
+
+  container.innerHTML = Object.keys(topics).map(t => `
+    <div class="topic-block">
+      <h3>${t}</h3>
+      ${topics[t].map(v => `
+        <div class="video-item">
+          <strong>${v.title}</strong>
+          <br>
+          <button onclick="window.open('${v.url}','_blank')">Assistir</button>
+        </div>`).join("")}
+    </div>
+  `).join("");
 }
+renderTopics();
 
-/* Pesquisa segura */
-safeRun(() => {
-  const searchInput = document.getElementById('searchInput');
-  const items = document.querySelectorAll('.item');
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const query = this.value.toLowerCase();
-      items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.classList.toggle('hidden-item', !text.includes(query));
-      });
-    });
-  }
-});
-
-/* Botões de rolagem */
-safeRun(() => {
-  const up = document.getElementById("upBtn");
-  const down = document.getElementById("downBtn");
-  const scrollAmount = 250;
-  function updateVisibility() {
-    const scrollY = window.scrollY;
-    const maxY = document.documentElement.scrollHeight - window.innerHeight;
-    if (up && down) {
-      up.classList.toggle("hidden", scrollY <= 5);
-      down.classList.toggle("hidden", scrollY >= maxY - 5);
-    }
-  }
-  if (up && down) {
-    up.addEventListener("click", () => window.scrollBy({ top: -scrollAmount, behavior: "smooth" }));
-    down.addEventListener("click", () => window.scrollBy({ top: scrollAmount, behavior: "smooth" }));
-  }
-  window.addEventListener("scroll", updateVisibility);
-  window.addEventListener("load", updateVisibility);
-});
-
-/* Filtro de vídeos */
-safeRun(() => {
-  window.filterVideos = function(category) {
-    const videos = document.querySelectorAll('.video-item');
-    videos.forEach(v => {
-      if (category === 'all') {
-        v.style.display = 'block';
-      } else {
-        v.style.display = v.classList.contains(category) ? 'block' : 'none';
-      }
-    });
-  };
-});
-
-/* Log de carregamento seguro */
-safeRun(() => {
-  console.log("✅ Streamix carregado com segurança!");
-});
+document.getElementById("searchInput").addEventListener("input", renderTopics);
 </script>
 </body>
 </html>
+
